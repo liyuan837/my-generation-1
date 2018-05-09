@@ -1,0 +1,7 @@
+**/.dubbo/**
+**/.idea/**
+**.iml
+**/target/**
+**/classes/**
+**/.bin/**
+module/**
