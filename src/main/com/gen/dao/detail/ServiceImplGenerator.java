@@ -7,9 +7,9 @@ import java.sql.SQLException;
 
 
 /**
- * 生成Service.java
- *
- * Created by caowei on 2017/8/31.
+ * @Author: LiYuan
+ * @Description:生成ServiceImpl.java
+ * @Date: 11:54 2018/5/11
  */
 public class ServiceImplGenerator {
 
@@ -22,10 +22,11 @@ public class ServiceImplGenerator {
 		StringBuffer data = new StringBuffer();
 
 		data.append("package " + Config.serviceImplPackage + ";\r\n\r\n")
-				.append("import com.bm.center.base.service.BaseServiceImpl;\r\n")
+
 				.append("import " + dbTableInfo.getPo().getPackageName() + "." + poClassName + ";\r\n")
 				.append("import " + dbTableInfo.getCondition().getPackageName() + "." + conditionClassName + ";\r\n")
-				.append("import " + Config.mapperJavaPackage + "." + dbTableInfo.getMapperClassName() + ";\r\n");
+				.append("import " + Config.mapperJavaPackage + "." + dbTableInfo.getMapperClassName() + ";\r\n")
+				.append("import "+ Config.serviceImplPackage +".base.BaseServiceImpl;\r\n");
 		if (!Config.serviceImplPackage.equals(Config.servicePackage)) {
 			data.append("import " + Config.servicePackage + "." + dbTableInfo.getServiceClassName() + ";\r\n");
 		}

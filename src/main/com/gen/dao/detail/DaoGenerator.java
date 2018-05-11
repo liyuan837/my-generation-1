@@ -7,9 +7,9 @@ import java.sql.SQLException;
 
 
 /**
- * 生成Mapper.java
- *
- * Created by caowei on 2017/8/31.
+ * @Author: LiYuan
+ * @Description:生成Mapper.java
+ * @Date: 11:39 2018/5/11
  */
 public class DaoGenerator {
 
@@ -23,11 +23,11 @@ public class DaoGenerator {
 
 
 		StringBuffer data = new StringBuffer();
-
 		data.append("package " + Config.mapperJavaPackage + ";\r\n\r\n")
-				.append("import com.bm.center.base.mapper.BaseMapper;\r\n")
+
 				.append("import " + dbTableInfo.getPo().getPackageName() + "." + poClassName + ";\r\n")
-				.append("import " + dbTableInfo.getCondition().getPackageName() + "." + conditionClassName + ";\r\n\n")
+				.append("import " + dbTableInfo.getCondition().getPackageName() + "." + conditionClassName + ";\r\n")
+				.append("import "+Config.mapperJavaPackage+".base.BaseMapper;\r\n\n")
 				.append("public interface " + dbTableInfo.getMapperClassName() + " extends BaseMapper<" + poClassName + ", " + conditionClassName + "> {\r\n\r\n")
 
 		.append("}");

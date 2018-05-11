@@ -7,9 +7,7 @@ public class Main {
 		MybatisGenerator generator = new MybatisGenerator();
 
 		String[] maps = {
-				"tb_performance_template_item", "tb_performance_template",
-				"tb_performance_assess","tb_performance_assess_item",
-				"tb_performance_assess_rule"
+				"user"
 		};
 
 		for (int i = 0; i < maps.length; i++) {

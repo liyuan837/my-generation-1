@@ -1,10 +1,10 @@
 package com.gen.dao;
 
-import com.bm.center.base.util.CopyUtil;
 import com.gen.conf.Config;
 import com.gen.conf.JDBC;
 import com.gen.domain.BeanFile;
 import com.gen.domain.ColumnProperties;
+import com.gen.util.CopyUtil;
 import com.gen.util.Utils;
 import lombok.Getter;
 
@@ -13,7 +13,9 @@ import java.util.*;
 
 
 /**
- * Created by caowei on 2017/8/31.
+ * @Author: LiYuan
+ * @Description:获取数据库表信息
+ * @Date: 11:25 2018/5/11
  */
 public class DatabaseTableInfo {
 
@@ -64,11 +66,8 @@ public class DatabaseTableInfo {
 	private DatabaseTableInfo(String tableName) throws SQLException {
 		this.tableName = tableName;
 		className = tableName;
-		// 去掉前缀tb_jz_
+		// 去掉前缀tb_
 		if (className.startsWith("tb_")) {
-			className = className.substring(3);
-		}
-		if (className.startsWith("jz_")) {
 			className = className.substring(3);
 		}
 		className = Utils.sql2JavaName(className);
@@ -350,10 +349,10 @@ public class DatabaseTableInfo {
 		}
 
 		if (isForm) {
-			defaultImportList.add("com.bm.center.base.form.BaseQueryForm");
+			defaultImportList.add(Config.formPackage+".BaseQueryForm");
 
 		} else {
-			defaultImportList.add("com.bm.center.base.condition.BaseCondition");
+			defaultImportList.add(Config.conditionPackage+".BaseCondition");
 		}
 
 		BeanFile beanFile = this.createBeanFile(className, packageName, moduleName, conditionPropertiesList, defaultImportList, isForm ? 1 : 0);

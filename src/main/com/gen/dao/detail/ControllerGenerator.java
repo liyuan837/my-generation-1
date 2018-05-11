@@ -43,14 +43,13 @@ public class ControllerGenerator {
 				.append("import " + Config.servicePackage + "." + dbTableInfo.getServiceClassName() + ";\r\n")
 				.append("import " + Config.exceptionPackage + "." + Config.exceptionName + ";\r\n")
 
-				.append("import " + Config.basePackage + ".controller.BaseController;\r\n")
-//				.append("import com.bm.center.base.response.CentreListResponse;\r\n")
-//				.append("import com.bm.center.base.response.CentreCutPageResponse;\r\n")
+				.append("import " + Config.basePackage + ".controller.base.BaseController;\r\n")
 				.append("import " + Config.basePackage + ".response.ResponseEntity;\r\n")
+				.append("import " + Config.basePackage + ".response.PageListResponse;\r\n")
 
 				.append("import java.util.List;\r\n")
 				.append("import java.util.ArrayList;\r\n")
-				.append("import " + Config.basePackage + ".utils.CopyUtil;\r\n")
+				.append("import " + Config.basePackage + ".util.CopyUtil;\r\n")
 				.append("import org.springframework.web.bind.annotation.*;\r\n")
 				.append("import javax.validation.Valid;\r\n")
 				.append("import io.swagger.annotations.Api;\r\n")
@@ -66,7 +65,7 @@ public class ControllerGenerator {
 				.append("\tprivate " + dbTableInfo.getServiceClassName() + " " + serviceName + ";\r\n\r\n")
 
 				// 查询单个
-				.append("\t@ApiOperation(value = \"查询" + dbTableInfo.getTableComment() + "\",notes = \"查询" + dbTableInfo.getTableComment() + "\",httpMethod = \"GET\")\r\n")
+				.append("\t@ApiOperation(value = \"查询" + dbTableInfo.getTableComment() + "\",notes = \"根据ID查询" + dbTableInfo.getTableComment() + "\",httpMethod = \"GET\")\r\n")
 				.append("\t@GetMapping(value = \"/query\")\r\n")
 				.append("\tpublic ResponseEntity<" + dbTableInfo.getVo().getClassName() + "> query(@ApiParam(value = \"" + primaryKey.getComment() + "\", required = true)@RequestParam " + primaryKey.getClazz() + " " + primaryKey.getName() + ") throws " + Config.exceptionName + " {\r\n")
 				.append("\t\t" + po.getClassName() + " po = " + serviceName + ".queryWithValid(" + primaryKey.getName() + ");\r\n")
@@ -78,52 +77,43 @@ public class ControllerGenerator {
 				.append("\t@ApiOperation(value = \"查询" + dbTableInfo.getTableComment() + "数量\",notes = \"查询" + dbTableInfo.getTableComment() + "数量\",httpMethod = \"POST\")\r\n")
 				.append("\t@PostMapping(value = \"/queryCount\")\r\n")
 				.append("\tpublic ResponseEntity<Integer> queryCount(@RequestBody@Valid " + queryForm.getClassName() + " form) throws " + Config.exceptionName + " {\r\n")
-				.append("\t\t" + condition.getClassName() + " condition = this.getConditionByQueryForm(form);\r\n")
+				.append("\t\t" + condition.getClassName() + " condition = CopyUtil.transfer(form, "+condition.getClassName()+".class);\r\n")
 				.append("\t\tint count = " + serviceName + ".queryCount(condition);\r\n")
 				.append("\t\treturn getSuccessResult(count);\r\n")
 				.append("\t}\r\n\r\n")
 
 
 				// 查询列表
-//				.append("\t@ApiOperation(value = \"查询" + dbTableInfo.getTableComment() + "列表\",notes = \"查询" + dbTableInfo.getTableComment() + "列表\",httpMethod = \"POST\")\r\n")
-//				.append("\t@PostMapping(value = \"/queryList\")\r\n")
-//				.append("\tpublic ResponseEntity<CentreListResponse<" + dbTableInfo.getVo().getClassName() + ">> queryList(@RequestBody@Valid " + queryForm.getClassName() + " form) throws " + Config.exceptionName + " {\r\n")
-//				.append("\t\t" + condition.getClassName() + " condition = this.getConditionByQueryForm(form);\r\n")
-//				.append("\t\tList<" + po.getClassName() + "> poList = " + serviceName + ".queryList(condition);\r\n")
-//				.append("\t\tList<" + vo.getClassName() + "> voList = CopyUtil.transfer(poList, " + vo.getClassName() + ".class);\r\n")
-//				.append("\t\treturn getSuccessResult(getListResponse(voList));\r\n")
-//				.append("\t}\r\n\r\n")
+				.append("\t@ApiOperation(value = \"查询" + dbTableInfo.getTableComment() + "列表\",notes = \"查询" + dbTableInfo.getTableComment() + "列表\",httpMethod = \"POST\")\r\n")
+				.append("\t@PostMapping(value = \"/queryList\")\r\n")
+				.append("\tpublic ResponseEntity<PageListResponse<" + dbTableInfo.getVo().getClassName() + ">> queryList(@RequestBody@Valid " + queryForm.getClassName() + " form) throws " + Config.exceptionName + " {\r\n")
+				.append("\t\t" + condition.getClassName() + " condition = CopyUtil.transfer(form, "+condition.getClassName()+".class);\r\n")
+				.append("\t\tList<" + po.getClassName() + "> poList = " + serviceName + ".queryList(condition);\r\n")
+				.append("\t\tList<" + vo.getClassName() + "> voList = CopyUtil.transfer(poList, " + vo.getClassName() + ".class);\r\n")
+				.append("\t\treturn getSuccessResult(voList);\r\n")
+				.append("\t}\r\n\r\n")
 
 
 				// 查询列表
-//				.append("\t@ApiOperation(value = \"查询" + dbTableInfo.getTableComment() + "列表(带分页)\",notes = \"查询" + dbTableInfo.getTableComment() + "列表(带分页)\",httpMethod = \"POST\")\r\n")
-//				.append("\t@PostMapping(value = \"/queryPageList\")\r\n")
-//				.append("\tpublic ResponseEntity<CentreCutPageResponse<" + dbTableInfo.getVo().getClassName() + ">> queryPageList(@RequestBody@Valid " + queryForm.getClassName() + " form) throws " + Config.exceptionName + " {\r\n")
-//				.append("\t\t" + condition.getClassName() + " condition = this.getConditionByQueryForm(form);\r\n")
-//				.append("\t\tList<" + vo.getClassName() + "> voList = new ArrayList<>();\r\n")
-//				.append("\t\tint count = " + serviceName + ".queryCount(condition);\r\n")
-//				.append("\t\tif (count > 0) {\r\n")
-//				.append("\t\t\tList<" + po.getClassName() + "> poList = " + serviceName + ".queryList(condition);\r\n")
-//				.append("\t\t\tvoList = CopyUtil.transfer(poList, " + vo.getClassName() + ".class);\r\n")
-//				.append("\t\t}\r\n")
-//				.append("\t\treturn getSuccessResult(getPageResponse(form, count, voList));\r\n")
-//				.append("\t}\r\n\r\n")
+				.append("\t@ApiOperation(value = \"查询" + dbTableInfo.getTableComment() + "列表(带分页)\",notes = \"查询" + dbTableInfo.getTableComment() + "列表(带分页)\",httpMethod = \"POST\")\r\n")
+				.append("\t@PostMapping(value = \"/queryPageList\")\r\n")
+				.append("\tpublic ResponseEntity<PageListResponse<" + dbTableInfo.getVo().getClassName() + ">> queryPageList(@RequestBody@Valid " + queryForm.getClassName() + " form) throws " + Config.exceptionName + " {\r\n")
+				.append("\t\t" + condition.getClassName() + " condition = CopyUtil.transfer(form, "+condition.getClassName()+".class);\r\n")
+				.append("\t\tList<" + vo.getClassName() + "> voList = new ArrayList<>();\r\n")
+				.append("\t\tint count = " + serviceName + ".queryCount(condition);\r\n")
+				.append("\t\tif (count > 0) {\r\n")
+				.append("\t\t\tList<" + po.getClassName() + "> poList = " + serviceName + ".queryList(condition);\r\n")
+				.append("\t\t\tvoList = CopyUtil.transfer(poList, " + vo.getClassName() + ".class);\r\n")
+				.append("\t\t}\r\n")
+				.append("\t\treturn getSuccessResult(getPageListResponse(condition.getPageNum(),condition.getPageSize(),count,voList));\r\n")
+				.append("\t}\r\n\r\n")
 
 				// 新增
 				.append("\t@ApiOperation(value = \"新增" + dbTableInfo.getTableComment() + "\",notes = \"新增" + dbTableInfo.getTableComment() + "\",httpMethod = \"POST\")\r\n")
 				.append("\t@PostMapping(value = \"/add\")\r\n")
 				.append("\tpublic ResponseEntity<" + dbTableInfo.getVo().getClassName() + "> add(@RequestBody@Valid " + createForm.getClassName() + " form) throws " + Config.exceptionName + " {\r\n")
 				.append("\t\t" + po.getClassName() + " po = CopyUtil.transfer(form, " + po.getClassName() + ".class);\r\n");
-		if (!dbTableInfo.isAutoIncrement()) {
-			if ("String".equals(primaryKey.getClazz())) {
-				headData.append("import com.bm.center.base.util.UUIDUtil;\r\n");
-				data.append("\t\tpo.set" + Utils.upperFirstChar(primaryKey.getName()) + "(UUIDUtil.getUUID());\r\n");
 
-			} else if ("Integer".equals(primaryKey.getClazz())) {
-				headData.append("import org.apache.commons.lang.math.RandomUtils;\r\n");
-				data.append("\t\tpo.set" + Utils.upperFirstChar(primaryKey.getName()) + "(RandomUtils.nextInt());\r\n");
-			}
-		}
 		if (addTimeColumn != null) {
 			if (headData.toString().indexOf(datePath) == -1) {
 				headData.append(datePath + "\r\n");

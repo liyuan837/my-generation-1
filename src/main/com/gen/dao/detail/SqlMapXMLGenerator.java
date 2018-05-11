@@ -9,9 +9,9 @@ import java.util.List;
 
 
 /**
- * 生成sql
- *
- * Created by caowei on 2017/8/31.
+ * @Author: LiYuan
+ * @Description:生成sql
+ * @Date: 11:44 2018/5/11
  */
 public class SqlMapXMLGenerator {
 
